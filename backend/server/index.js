@@ -14,7 +14,9 @@ server.get('/api/jsonData/', async (req, res) => {
   //   'x-access-token': process.env.APP_TOKEN
   // }
   try {
-    const { data } = await axios.get(process.env.METEORITE_URL)
+    const { data } = await axios.get(
+      `${process.env.METEORITE_URL}?$offset=${req.query.page}&$limit=20`
+    )
     return res.status(200).json(data)
   } catch ({ msg, code }) {
     return res.status(500).json({ msg, code })
