@@ -1,0 +1,43 @@
+{
+  "name": "meteorite-explorer",
+  "private": true,
+  "scripts": {
+    "start:client": "cd ./frontend && npm start",
+    "start:server": "nodemon ./backend/server/index.js",
+    "dev:start": "concurrently 'npm run start:client' 'npm run start:server'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/secantsquared/meteorite-explorer.git"
+  },
+  "dependencies": {
+    "axios": "0.21.1",
+    "concurrently": "5.3.0"
+  },
+  "devDependencies": {
+    "eslint": "7.20.0",
+    "eslint-config-prettier": "7.2.0",
+    "eslint-plugin-prettier": "3.3.1",
+    "eslint-plugin-react": "^7.22.0",
+    "husky": "4.3.0",
+    "lint-staged": "10.5.4",
+    "prettier": "2.2.1"
+  },
+  "author": "Ryan Boris <ryan.boris@gmail.com>",
+  "license": "MIT",
+  "workspaces": [
+    "frontend/**",
+    "backend/**"
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "prettier --write"
+    ]
+  }
+}
