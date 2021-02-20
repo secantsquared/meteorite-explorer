@@ -6,12 +6,12 @@ import Table from './components/Table/Table'
 
 const App = () => {
   const [page, setPage] = useState(0)
-  const getMeteors = async () => {
+  const getMeteors = React.useCallback(async () => {
     const { data } = await axios.get(
       `http://localhost:5000/api/jsonData?page=${page}`
     )
     return data
-  }
+  }, [page])
 
   const { data, error, isLoading, isError, isFetching } = useQuery(
     ['meteors', page],
