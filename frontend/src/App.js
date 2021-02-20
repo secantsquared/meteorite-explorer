@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import { useQuery } from 'react-query'
 
-import Meteor from './Meteor'
+import Table from './components/Table/Table'
 
 const App = () => {
   const [page, setPage] = useState(0)
@@ -22,7 +22,7 @@ const App = () => {
   )
 
   return (
-    <div>
+    <>
       {isLoading ? (
         'Loading'
       ) : isError ? (
@@ -30,10 +30,8 @@ const App = () => {
       ) : isFetching ? (
         <div>Refreshing...</div>
       ) : (
-        <div>
-          {data.map(({ id, name }) => (
-            <Meteor key={id} nameProp={name} />
-          ))}
+        <>
+          <Table data={data} />
           <button
             onClick={() => {
               if (page > 0) {
@@ -50,9 +48,9 @@ const App = () => {
           >
             next
           </button>
-        </div>
+        </>
       )}
-    </div>
+    </>
   )
 }
 
