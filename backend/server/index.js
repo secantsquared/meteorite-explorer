@@ -2,25 +2,45 @@ require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
 const axios = require('axios')
+const redis = require('redis')
 
 const server = express()
 server.use(cors())
 server.use(express.json())
 
-server.get('/api/jsonData/', async (req, res) => {
+const PORT_REDIS = process.env.PORT || 6379
+const redisClient = redis.createClient(PORT_REDIS)
+
+const set = (key, value) => redisClient.set(key, JSON.stringify(value))
+
+const get = (req, res, next) => {
+  const key = req.query.page
+  redisClient.get(key, (error, data) => {
+    if (error) {
+      res.status(400).send(error)
+    }
+    if (data !== null) {
+      res.status(200).send(JSON.parse(data))
+    } else {
+      next()
+    }
+  })
+}
+
+server.get('/api/jsonData/', get, (req, res) => {
   // const headers = {
   //   'Access-Control-Allow-Headers': 'x-access-token',
   //   'Content-Type': 'application/json',
   //   'x-access-token': process.env.APP_TOKEN
   // }
-  try {
-    const { data } = await axios.get(
-      `${process.env.METEORITE_URL}?$offset=${req.query.page}&$limit=20`
-    )
-    return res.status(200).json(data)
-  } catch ({ msg, code }) {
-    return res.status(500).json({ msg, code })
-  }
+
+  return axios
+    .get(`${process.env.METEORITE_URL}?$offset=${req.query.page}&$limit=20`)
+    .then(({ data }) => {
+      set(req.query.page, data)
+      return res.status(200).json(data)
+    })
+    .catch(e => console.error(e))
 })
 
 server.listen(process.env.PORT || 5000, () =>
