@@ -27,20 +27,16 @@ const get = (req, res, next) => {
   })
 }
 
-server.get('/api/jsonData/', get, (req, res) => {
-  // const headers = {
-  //   'Access-Control-Allow-Headers': 'x-access-token',
-  //   'Content-Type': 'application/json',
-  //   'x-access-token': process.env.APP_TOKEN
-  // }
-
-  return axios
-    .get(`${process.env.METEORITE_URL}?$offset=${req.query.page}&$limit=20`)
-    .then(({ data }) => {
-      set(req.query.page, data)
-      return res.status(200).json(data)
-    })
-    .catch(e => console.error(e))
+server.get('/api/jsonData/', get, async (req, res) => {
+  try {
+    const { data } = await axios.get(
+      `${process.env.METEORITE_URL}?$offset=${req.query.page}&$limit=20`
+    )
+    set(req.query.page, data)
+    return res.status(200).json(data)
+  } catch (err) {
+    return res.status(500).json({ msg: err.message, code: err.code })
+  }
 })
 
 server.listen(process.env.PORT || 5000, () =>
