@@ -4,6 +4,8 @@ const cors = require('cors')
 const axios = require('axios')
 // const redis = require('redis')
 //server
+
+const PORT = process.env.PORT || 5000
 const server = express()
 server.use(cors())
 server.use(express.json())
@@ -39,6 +41,4 @@ server.get('/api/jsonData/', async (req, res) => {
   }
 })
 
-server.listen(process.env.PORT || 5000, () =>
-  console.log('Active on http://localhost:5000')
-)
+server.listen(PORT, () => console.log(`Active on ${PORT}`))
