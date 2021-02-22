@@ -1,0 +1,14 @@
+.App {
+  width: 100%;
+  display: flex;
+  order: 0;
+}
+button:nth-of-type(1) {
+  order: -1;
+}
+
+button {
+  width: 5%;
+  height: 50px;
+  align-self: center;
+}

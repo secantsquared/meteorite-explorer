@@ -2,16 +2,18 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import { useQuery } from 'react-query'
 
-import Table from './components/Table/Table'
+import Table from '../Table'
+
+import './app.css'
 
 const App = () => {
   const [page, setPage] = useState(0)
-  const getMeteors = React.useCallback(async () => {
+  const getMeteors = async () => {
     const { data } = await axios.get(
-      `http://localhost:5000/api/jsonData?page=${page}`
+      `https://meteorite-explorer-rboris.herokuapp.com/api/jsonData?page=${page}`
     )
     return data
-  }, [page])
+  }
 
   const { data, error, isLoading, isError, isFetching } = useQuery(
     ['meteors', page],
@@ -30,7 +32,7 @@ const App = () => {
       ) : isFetching ? (
         <div>Refreshing...</div>
       ) : (
-        <>
+        <div className="App">
           <Table data={data} />
           <button
             onClick={() => {
@@ -48,7 +50,7 @@ const App = () => {
           >
             next
           </button>
-        </>
+        </div>
       )}
     </>
   )
