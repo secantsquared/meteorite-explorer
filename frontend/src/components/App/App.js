@@ -10,7 +10,7 @@ const App = () => {
   const [page, setPage] = useState(0)
   const getMeteors = async () => {
     const { data } = await axios.get(
-      `https://meteorite-explorer-rboris.herokuapp.com/api/jsonData?page=${page}`
+      `http://localhost:5000/api/jsonData?page=${page}`
     )
     return data
   }

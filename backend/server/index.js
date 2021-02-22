@@ -10,7 +10,8 @@ const server = express()
 server.use(cors())
 server.use(express.json())
 
-const redisClient = redis.createClient(process.env.REDISCLOUD_URL)
+const PORT_REDIS = process.env.PORT || 6379
+const redisClient = redis.createClient(PORT_REDIS)
 
 const set = (key, value) => redisClient.set(key, JSON.stringify(value))
 
